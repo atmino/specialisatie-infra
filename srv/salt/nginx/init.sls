@@ -1,0 +1,4 @@
+#yaml
+
+nginx:
+    pkg.installed: []
