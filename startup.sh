@@ -22,3 +22,41 @@ sed -i -e 's/#master: salt/master: salty-master' /etc/salt/minion
 
 #salt-minion needs to be restarted to see the changes in config
 systemctl restart salt-minion
+
+#Next, we want docker on the salt minion
+#We want to uninstall any previous versions, if present.
+#Just a precaution.
+apt-get remove docker docker-engine docker.io
+
+#Add the docker key to apt 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+#To ease installation/upgrading we add the docker repositories for the stable release
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+   
+#update apt so it includes the new sources (TODO: merge all update statements)
+apt-get update -y
+
+#install the latest Docker (community edition) version
+apt-get install docker-ce -y
+
+#next we add a docker user and group to avoid it running as root
+useradd docker-user
+groupadd docker
+usermod -aG docker docker-user
+
+#note that for changes to take effect on user privileges the VM has to be restarted.
+#The machine will be restarted AFTER all the installations in this script have run.
+
+#enable docker to start on boot
+systemctl enable docker
+
+#WAARSCHIJNLIJK NIET NODIG MET KANT EN KLARE CONTAINERS
+#next we want to install docker-compose for easy breezy administration of containers
+#lines from https://github.com/docker/compose/releases
+#curl -L https://github.com/docker/compose/releases/download/1.17.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+#chmod +x /usr/local/bin/docker-compose
+
