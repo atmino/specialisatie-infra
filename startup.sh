@@ -18,7 +18,7 @@ apt-get update -y
 apt-get install salt-minion -y
 
 #giving the minion the master's IP address
-sed -i -e 's/#master: salt/master: salty-master' /etc/salt/minion
+sed -i -e 's/#master: salt/master: 10.5.1.60/' /etc/salt/minion
 
 #salt-minion needs to be restarted to see the changes in config
 systemctl restart salt-minion
@@ -64,7 +64,7 @@ systemctl restart salt-minion
 apt-get install nagios-nrpe-server nagios-plugins -y
 
 #edit the config to point to the monitor server
-sed -i -e 's/#server_address=127.0.0.1/server_address=10.5.1.60' /etc/nagios/nrpe.cfg
+sed -i -e 's/#server_address=127.0.0.1/server_address=10.5.1.60/' /etc/nagios/nrpe.cfg
 
 #restart the service to find changes
 service nagios-nrpe-server restart

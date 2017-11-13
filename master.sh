@@ -89,7 +89,7 @@ make
 make install
 
 #configureer waar de config vandaan wordt gehaald
-
+sed -i -e 's/#cfg_dir=/usr/local/nagios/etc/nagios.cfg/cfg_dir=/usr/local/nagios/etc/nagios.cfg' /usr/loca/nagios/etc/nagios.cfg
 
 #herstart de service
 systemctl restart nagios.service
