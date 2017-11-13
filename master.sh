@@ -56,7 +56,7 @@ update-rc.d nagios defaults
 make install-commandmode
 make install-config
 
-
+#de configuratie voor apache2
 make install-webconf
 a2enmod rewrite
 a2enmod cgi
@@ -65,8 +65,31 @@ a2enmod cgi
 ufw allow Apache
 ufw reload
 
-#nagios user aanmaken in apache (wachtwoord automatisch meegeven hoe?)
-htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+#nagios user aanmaken in apache (s3 privilege)
+htpasswd -c -b /usr/local/nagios/etc/htpasswd.users nagiosadmin porkI9SwSmdQHv9AQmxD
 
 systemctl restart apache2.services
 systemctl start nagios.service
+
+
+#installeer nagios plugins
+#prereqs
+apt-get install -y autoconf gcc libc6 libmcrypt-dev make libssl-dev wget bc gawk dc build-essential snmp libnet-snmp-perl gettext
+
+#download source naar tmp, unpack
+cd /tmp
+wget --no-check-certificate -O nagios-plugins.tar.gz https://github.com/nagios-plugins/nagios-plugins/archive/release-2.2.1.tar.gz
+tar zxf nagios-plugins.tar.gz
+
+#navigeer naar folder, configureer en installeer
+cd /tmp/nagios-plugins-release-2.2.1/
+./tools/setup
+./configure
+make
+make install
+
+#configureer waar de config vandaan wordt gehaald
+
+
+#herstart de service
+systemctl restart nagios.service
