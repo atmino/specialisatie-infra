@@ -24,10 +24,22 @@ apt-get install salt-master -y
 #copying the keys to the right directory to accept them
 #cp minion1.pub /etc/salt/pki/master/minions/minion1
 #cp minion2.pub /etc/salt/pki/master/minions/minion2
-#distributing minionkeys
+#distributing minionkeys ??
 
 #setup log service
+#allow the incoming messages through ufw
+ufw allow 514
+ufw reload
 
+#uncomment the tcp and udp modules in rsyslog.conf
+sed -i -e 's/#module(load="imudp")/module(load="imudp")/'
+       -e 's/#input(type="imudp" port="514")/input(type="imudp" port="514")/'
+	   -e 's/#module(load="imtcp")/module(load="imtcp")/'
+       -e 's/#input(type="imtcp" port="514")/input(type="imtcp" port="514")/'	   
+		   /etc/rsyslog.conf
+		   
+#restarting the service to acknowledge changes		   
+systemctl restart rsyslog.service
 
 
 #setup monitor service
