@@ -68,3 +68,10 @@ sed -i -e 's/#server_address=127.0.0.1/server_address=10.5.1.60/' /etc/nagios/nr
 
 #restart the service to find changes
 service nagios-nrpe-server restart
+
+#adding the logserver to rsyslog.conf
+echo "*.*       @@10.5.1.60:514" >> /etc/rsyslog.conf
+
+#restarting the logging services
+systemctl restart rsyslog
+
