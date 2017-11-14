@@ -1,6 +1,6 @@
 #!yaml
 #install docker-ce
-#/srv/salt/init.sls
+#/srv/salt/docker/init.sls
 
 docker-repo:
   pkgrepo.managed:
@@ -25,3 +25,8 @@ download-docker-compose:
 install-docker-compose:
   cmd.run:
     - name: sudo chmod +x /usr/local/bin/docker-compose
+
+manage-docker-compose-yaml:
+  file.managed:
+    - name: /docker-compose.yaml
+    - source: salt://docker/docker-compose.yaml
