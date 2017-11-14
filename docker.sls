@@ -16,3 +16,12 @@ docker:
     - name: docker
     - require:
       - pkg: docker-ce
+      
+download-docker-compose:
+  cmd.run:
+    - name: sudo curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+    - creates: /usr/local/bin/docker-compose
+    
+install-docker-compose:
+  cmd.run:
+    - name: sudo chmod +x /usr/local/bin/docker-compose
