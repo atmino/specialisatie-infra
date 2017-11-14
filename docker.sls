@@ -30,3 +30,7 @@ manage-docker-compose-yaml:
   file.managed:
     - name: /docker-compose.yaml
     - source: salt://docker/docker-compose.yaml
+    
+start-docker-containers:
+  cmd.run:
+    - name: sudo docker-compose up -d

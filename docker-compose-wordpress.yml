@@ -1,5 +1,6 @@
 #docker compose file for the wordpress installation
 #waarschijnlijk niet nodig?
+#van: https://docs.docker.com/compose/wordpress/#build-the-project
 
 version: '3'
 
