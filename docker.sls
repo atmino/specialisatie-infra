@@ -35,7 +35,7 @@ startup-swarm:
   cmd.run:
     - name: sudo docker swarm join --token SWMTKN-1-1tfcidr4dcrznab3lk5mxrdha1wwd7caloyv4k75a4sasrq3rn-9upanwf9kzss7vbhstcztwctp 10.5.1.60:2377
     
-start-docker-containers:
-  cmd.run:
-    - name: sudo docker-compose up -d
+# start-docker-containers:
+  # cmd.run:
+    # - name: sudo docker-compose up -d
     

@@ -1,6 +1,5 @@
 #!bin/sh
 # To be executed to make a nice salt-minion
-# We don't need sudo (right?)
 
 # Setting the right timezone
 timedatectl set-timezone 'Europe/Amsterdam'
