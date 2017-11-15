@@ -1,3 +1,4 @@
+#
 #docker compose file for the wordpress installation
 #waarschijnlijk niet nodig?
 #van: https://docs.docker.com/compose/wordpress/#build-the-project
@@ -9,59 +10,71 @@ services:
      image: mysql:5.7
      volumes:
        - db_data:/var/lib/mysql
-     #restart: always
-     # environment:
-       # MYSQL_ROOT_PASSWORD: somewordpress
-       # MYSQL_DATABASE: wordpress
-       # MYSQL_USER: wordpress
-       # MYSQL_PASSWORD: wordpress
- #    deploy:
- #      restart_policy:
- #        condition: on-failure
+     deploy:
+#       replicas: 2
+       restart_policy:
+         condition: on-failure
      networks:
        - wordpress_network
-     secrets:
-       - MYSQL_ROOT_PASSWORD
-       - MYSQL_DATABASE
-       - MYSQL_USER
-       - MYSQL_PASSWORD
-       
+#     secrets:
+#       - MYSQL_ROOT_PASSWORD
+#       - MYSQL_DATABASE
+#       - MYSQL_USER
+#       - MYSQL_PASSWORD
+     environment:
+       MYSQL_ROOT_PASSWORD: hoedjevanpapier
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: puddingbroodje
+   visualizer:
+     image: dockersamples/visualizer:stable
+     ports:
+       - "8080:8080"
+     volumes:
+       - "/var/run/docker.sock:/var/run/docker.sock"
+     deploy:
+       placement:
+         constraints: [node.role == manager]
+     networks:
+      - wordpress_network
    wordpress:
      depends_on:
        - db
      image: wordpress:latest
      ports:
        - "8000:80"
-#     restart: always
-     # environment:
-       # WORDPRESS_DB_HOST: db:3306
-       # WORDPRESS_DB_USER: wordpress
-       # WORDPRESS_DB_PASSWORD: wordpress
+     deploy:
+       replicas: 2
+       restart_policy:
+         condition: on-failure
      networks:
        - wordpress_network
-     secrets:
-       - WORDPRESS_DB_HOST
-       - WORDPRESS_DB_USER
-       - WORDPRESS_DB_PASSWORD
+#     secrets:
+#       - WORDPRESS_DB_HOST
+#       - WORDPRESS_DB_USER
+#       - WORDPRESS_DB_PASSWORD
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: puddingbroodje
 volumes:
     db_data:
-
 networks:
   wordpress_network:
     external: true
-    
-secrets:
-  MYSQL_ROOT_PASSWORD:
-    external: true
-  MYSQL_DATABASE:
-    external: true
-  MYSQL_USER:
-    external: true
-  MYSQL_PASSWORD:
-    external: true
-  WORDPRESS_DB_HOST:
-    external: true
-  WORDPRESS_DB_USER:
-    external: true
-  WORDPRESS_DB_PASSWORD:
-    external: true
+
+#secrets:
+#  MYSQL_ROOT_PASSWORD:
+#    external: true
+#  MYSQL_DATABASE:
+#    external: true
+#  MYSQL_USER:
+#    external: true
+#  MYSQL_PASSWORD:
+#    external: true
+#  WORDPRESS_DB_HOST:
+#    external: true
+#  WORDPRESS_DB_USER:
+#    external: true
+#  WORDPRESS_DB_PASSWORD:
+#    external: true

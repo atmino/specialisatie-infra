@@ -120,12 +120,14 @@ apt-get update -y
 apt-get install docker-ce -y
 
 #next we add a docker user and group to avoid it running as root
-useradd docker-user
+useradd docker
 groupadd docker
-usermod -aG docker docker-user
+usermod -aG docker docker
 
-#note that for changes to take effect on user privileges the VM has to be restarted.
+#note that for changes to take effect on user privileges the VM has to be restarted. ?
 #The machine will be restarted AFTER all the installations in this script have run.
+
+newgrp docker
 
 #enable docker to start on boot
 systemctl enable docker
@@ -153,14 +155,15 @@ ufw reload
 # echo "puddingbroodje" | docker secret create WORDPRESS_DB_PASSWORD -
 
 #create the network for the stack
-docker network create wordpress_network -d overlay --subnet=10.5.1.0/24
+docker network create wordpress_network -d overlay
 
 #deploy to stack
 docker stack deploy --compose-file=/srv/salt/docker/docker-compose.yaml wordpress
 
 #create user specifically for copying nagios conf info
-useradd nagios_conf
-passwd -d nagios_conf
-mkdir /usr/local/nagios/etc/new
-chown -R nagios_conf: /usr/local/nagios/etc/new
-chmod -R 644 /usr/local/nagios/etc/new
+# useradd nagios_conf
+# passwd -d nagios_conf
+# mkdir /usr/local/nagios/etc/new
+# chown -R nagios_conf: /usr/local/nagios/etc/new
+# chmod -R 644 /usr/local/nagios/etc/new
+
